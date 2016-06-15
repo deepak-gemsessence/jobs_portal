@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  graduation: MyString
+  post_graduation: MyString
+  contact: MyString
+  address: MyString
+
+two:
+  graduation: MyString
+  post_graduation: MyString
+  contact: MyString
+  address: MyString
