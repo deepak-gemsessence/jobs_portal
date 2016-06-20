@@ -6,7 +6,7 @@ gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 # manage multiple nested models in single form
-gem 'nested_form'
+# gem 'nested_form'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
