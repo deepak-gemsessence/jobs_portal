@@ -37,9 +37,17 @@
   </div>
 
   <div class="form-group">
-    <%= f.label :user_type %><br />
-    <%= f.select :user_type, [ 'Job-seeker', 'Job-recruiter' ], class: "form-control" %>
+    <%#= f.label :user_type %>
+    <%#= f.select(:user_type, [ 'Job-seeker', 'Job-recruiter' ], class: "form-control") %>
   </div>
+
+
+
+  <div class="form-group">
+    <%= f.label :user_type %>
+    <%= f.select(:user_type, options_for_select([['Job-seeker', 'Job-seeker'], ['Job-recruiter', 'Job-recruiter']]), {}, {class: "form-control"}) %>
+  </div>
+
   <div class="actions">
     <%= f.submit "Sign up", class: "btn btn-success" %>
   </div>

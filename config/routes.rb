@@ -2,8 +2,8 @@ Rails.application.routes.draw do
 
   root 'welcome#index'
 
-  get 'welcome/index'
-
+  # get 'welcome/index'
+  resource :welcome
   devise_for :users, :controllers => {:registrations => "registrations"}
 
   # resource :users do

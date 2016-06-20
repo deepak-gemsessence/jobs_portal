@@ -1,3 +1,3 @@
 class Skill < ActiveRecord::Base
-  has_many :skills_set
+  has_many :skill_sets
 end

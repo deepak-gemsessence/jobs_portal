@@ -51,14 +51,18 @@
         <div class="navbar-collapse collapse navbar-responsive-collapse">
           <ul class="nav navbar-nav">
             <% if current_user %>
-              <li><%= link_to "Sign-out", destroy_user_session_path, method: :delete %></li>
               <li><%= link_to "Edit Details", edit_user_registration_path  %></li>
-            <% else %>
-              <li><%= link_to "Sign-in", user_session_path  %></li>
-              <li><%= link_to "Sign-up", new_user_registration_path  %></li>
             <% end %>
           </ul>
-          <form class="navbar-form navbar-left" role="search">
+          <ul class="nav navbar-nav pull-right">
+            <% if current_user %>
+              <li><%= link_to "Sign-out", destroy_user_session_path, method: :delete %></li>
+            <% else %>
+              <li><%= link_to "Sign-up", new_user_registration_path  %></li>
+              <li><%= link_to "Sign-in", user_session_path  %></li>
+            <% end %>
+          </ul>
+          <form class="navbar-form navbar-right" role="search">
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Search">
             </div>
@@ -91,7 +95,7 @@
       </div><!--/row-->
 
       <footer>
-        <p>&copy; Company 2016</p>
+        <p class="text-center">&copy; Company 2016</p>
       </footer>
 
     </div> <!-- /container -->

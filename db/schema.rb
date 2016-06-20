@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160614095809) do
+ActiveRecord::Schema.define(version: 20160615085954) do
+
+  create_table "skill_sets", force: :cascade do |t|
+    t.integer  "skillable_id",   limit: 4
+    t.string   "skillable_type", limit: 255
+    t.integer  "skill_id",       limit: 4
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
 
   create_table "skills", force: :cascade do |t|
     t.string   "name",       limit: 255

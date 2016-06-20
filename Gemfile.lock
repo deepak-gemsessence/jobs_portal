@@ -92,7 +92,6 @@ GEM
     minitest (5.9.0)
     multi_json (1.12.1)
     mysql2 (0.4.4)
-    nested_form (0.3.2)
     nokogiri (1.6.8)
       mini_portile2 (~> 2.1.0)
       pkg-config (~> 1.1.7)
@@ -190,7 +189,6 @@ DEPENDENCIES
   jquery-rails
   less-rails
   mysql2 (>= 0.3.13, < 0.5)
-  nested_form
   pry
   rails (= 4.2.6)
   sass-rails (~> 5.0)

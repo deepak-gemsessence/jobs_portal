@@ -25,23 +25,44 @@
 
   <%= f.fields_for :user_profile do |fa| %>
     <div class="form-group">
-      <%= fa.label :graduation %><br />
-      <%= fa.text_field :graduation, class: "form-control", placeholder: "Enter Graduation Detail"  %>
+      <%#= fa.label :graduation %>
+      <%#= fa.select(:graduation, options_for_select(User::GRADUATION, fa.object.graduation), {}, {class: "form-control"}) %>
     </div>
 
     <div class="form-group">
-      <%= fa.label :post_graduation %><br />
-      <%= fa.text_field :post_graduation, class: "form-control", placeholder: "Enter Post Graduation Detail"  %>
+      <%= fa.label :graduation %>
+      <%= fa.select(:graduation, User::GRAD.collect { |p| [ p, p ] }, {}, {class: "form-control"}) %>
+    </div>
+
+    <div class="form-group">
+      <%= fa.label :post_graduation %>
+      <%= fa.select(:post_graduation, User::POST_GRAD.collect { |p| [ p, p ] }, {}, {class: "form-control"}) %>
+    </div>
+
+    <div class="form-group">
+      <%#= fa.label :post_graduation %>
+      <%#= fa.select(:post_graduation, options_for_select(User::POST_GRADUATION, fa.object.post_graduation), {}, {class: "form-control"}) %>
     </div>
 
     <div class="form-group">
       <%= fa.label :contact %><br />
-      <%= fa.text_field :contact, class: "form-control", placeholder: "Enter Contact No."  %>
+      <%= fa.number_field :contact, class: "form-control", placeholder: "Enter Contact No."  %>
     </div>
 
     <div class="form-group">
       <%= fa.label :address %><br />
       <%= fa.text_field :address, class: "form-control", placeholder: "Enter Your Address"  %>
+    </div>
+  <% end %>
+
+  <%= f.fields_for :skill_sets do |sk|%>
+    <div class="form-group">
+      <%= sk.label :skill %><br>
+      <%= (sk.check_box :skill_id, {checked: !sk.object.new_record?, class: "chkbox"}, sk.object.skill_id, false) %>
+      <%= sk.object.skill.name %>
+      <% if sk.object.persisted? %>
+        <%= sk.check_box :_destroy, class: "destroy" %>
+      <% end %>
     </div>
   <% end %>
 
@@ -65,7 +86,7 @@
   </div>
 
   <div class="actions">
-    <%= f.submit "Update", class: "btn btn-success" %>
+    <%= f.submit "Save", class: "btn btn-success" %>
   </div>
 <% end %>
 
