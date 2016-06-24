@@ -1,0 +1,39 @@
+<h2> Hello        :- <%= current_user.first_name %> </h2>
+<h1 class="text-center">Show Job</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Title</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><%= @job.title %></td>
+    <td><%= @job.location %></td>
+    <td><%= @job.description %></td>
+  </tr>
+</table>
+
+<h3 class="text-center"> Applied Candidates are :- </h3>
+<table>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>E-mail</th>
+    <th>Matching Skills</th>
+  </tr>
+  <% @job_seekers.each do |job_seeker| %>
+    <tr>
+      <td><%= job_seeker.first_name %></td>
+      <td><%= job_seeker.last_name %></td>
+      <td><%= job_seeker.email %></td>
+      <td>
+        <% if job_seeker.skills.present? %>
+          <% job_seeker.skills.each do |skill|%>
+            <%= skill.name %><%= "," unless skill == job_seeker.skills.last %>
+          <% end %>
+        <% end %>
+      </td>
+    </tr>
+  <% end %>
+</table>

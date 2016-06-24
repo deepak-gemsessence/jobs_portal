@@ -25,11 +25,6 @@
 
   <%= f.fields_for :user_profile do |fa| %>
     <div class="form-group">
-      <%#= fa.label :graduation %>
-      <%#= fa.select(:graduation, options_for_select(User::GRADUATION, fa.object.graduation), {}, {class: "form-control"}) %>
-    </div>
-
-    <div class="form-group">
       <%= fa.label :graduation %>
       <%= fa.select(:graduation, User::GRAD.collect { |p| [ p, p ] }, {}, {class: "form-control"}) %>
     </div>
@@ -37,11 +32,6 @@
     <div class="form-group">
       <%= fa.label :post_graduation %>
       <%= fa.select(:post_graduation, User::POST_GRAD.collect { |p| [ p, p ] }, {}, {class: "form-control"}) %>
-    </div>
-
-    <div class="form-group">
-      <%#= fa.label :post_graduation %>
-      <%#= fa.select(:post_graduation, options_for_select(User::POST_GRADUATION, fa.object.post_graduation), {}, {class: "form-control"}) %>
     </div>
 
     <div class="form-group">
@@ -55,14 +45,19 @@
     </div>
   <% end %>
 
-  <%= f.fields_for :skill_sets do |sk|%>
+  <%= f.label :skill %><br>
+
+
+  <% Skill.all.each_with_index do |skill, index|%>
     <div class="form-group">
-      <%= sk.label :skill %><br>
-      <%= (sk.check_box :skill_id, {checked: !sk.object.new_record?, class: "chkbox"}, sk.object.skill_id, false) %>
-      <%= sk.object.skill.name %>
-      <% if sk.object.persisted? %>
-        <%= sk.check_box :_destroy, class: "destroy" %>
-      <% end %>
+      <%#= (sk.check_box :skill_id, {checked: !sk.object.new_record?, class: "chkbox"}, sk.object.skill_id, false) %>
+
+      <%= check_box_tag :skill_id, skill.id, (f.object.skill_sets.map(&:skill_id).include? skill.id), :name => "user[skill_sets_attributes][#{index}][skill_id]" %>
+      <%= skill.name %>
+      <%# hidden_field_tag :_destroy if f.object.skill_sets.map(&:skill_id).include? skill.id %>
+      <%# if sk.object.persisted? %>
+        <%#= sk.check_box :_destroy, class: "destroy" %>
+      <%# end %>
     </div>
   <% end %>
 

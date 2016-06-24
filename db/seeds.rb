@@ -5,3 +5,11 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+#Generate 100 Skills
+#you have to skill that skills if its already in DB.
+skill_name = 'ruby'
+(1..100).each do |var|
+  skill = skill_name+var.to_s
+  Skill.create!(name: skill) unless Skill.find_by_name(skill)
+end

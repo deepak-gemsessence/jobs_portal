@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   # get 'welcome/index'
   resource :welcome
   devise_for :users, :controllers => {:registrations => "registrations"}
+  resources :jobs do
+    patch :apply, on: :member
+    patch :un_apply, on: :member
+  end
 
   # resource :users do
   #    resource :user_profile
