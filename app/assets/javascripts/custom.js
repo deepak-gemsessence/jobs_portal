@@ -5,8 +5,6 @@ $(document).ready(function() {
   });
 });
 
-
-
 // $(document).ready(function() {
 //   $("#user_skill_sets_attributes_0__destroy").hide();
 //   $("#user_skill_sets_attributes_1__destroy").hide();

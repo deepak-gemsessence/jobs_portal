@@ -1,0 +1,53 @@
+<h2> Hello        :- <%= current_user.first_name %> </h2>
+
+<h1 class="text-center">Create a Job</h1>
+
+<%= render 'errors' %>
+
+<%= form_for @job do |f| %>
+
+  <div class="form-group">
+    <%= f.label :title %><br />
+    <%= f.text_field :title, autocomplete: "off", autofocus: true, class: "form-control", placeholder: "Enter Job Title" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :location %><br />
+    <%= f.text_field :location, autocomplete: "off", class: "form-control", placeholder: "Enter Job location" %>
+  </div>
+
+  <%= f.label :skill %><br>
+  <%= f.fields_for :skill_sets do |sk|%>
+    <div class="form-group">
+      <%= (sk.check_box :skill_id, {checked: !sk.object.new_record?, class: "chkbox"}, sk.object.skill_id, false) %>
+      <%= sk.object.skill.name %>
+     </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :expire_time %><br />
+    <%= f.date_field :expire_time, autocomplete: "off", class: "form-control", placeholder: "Enter Job Expire-time" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :min_salary %><br />
+    <%= f.number_field :min_salary, autocomplete: "off", class: "form-control", placeholder: "Enter Min Salay" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :max_salary %><br />
+    <%= f.number_field :max_salary, autocomplete: "off", class: "form-control", placeholder: "Enter Max Salary" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description %><br />
+    <%= f.text_field :description, autocomplete: "off", class: "form-control", placeholder: "Enter Job Description" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Create Job", class: "btn btn-success" %>
+  </div>
+<% end %>
+<br>
+<%= link_to "Back", :back %>
+<br>

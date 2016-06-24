@@ -8,12 +8,14 @@ class User < ActiveRecord::Base
   has_many :skill_sets, as: :skillable
   has_many :skills, through: :skill_sets
   accepts_nested_attributes_for :skill_sets, allow_destroy: true
+  has_many :apply_jobs, dependent: :destroy
+  has_many :jobs, foreign_key: :recruiter_id, dependent: :destroy
+  has_many :applied_jobs, through: :apply_jobs, source: :job
 
   validates :username, uniqueness: true
   validates :first_name, :last_name, :username, presence: true
 
-  # GRADUATION = [['B.A.', 'B.A.'], ['B.B.A.', 'B.B.A.'], ['B.Com', 'B.Com'], ['B.C.A.', 'B.C.A.'], ['B.E.', 'B.E.'], ['B.Sc', 'B.Sc']].freeze
-  # POST_GRADUATION = [['M.A.', 'M.A.'], ['M.B.A.', 'M.B.A.'], ['M.Com', 'M.Com'], ['M.C.A.', 'M.C.A.'], ['M.E.', 'M.E.'], ['M.Sc', 'M.Sc']].freeze
+  enum user_type: {seeker: "Job-seeker", recruiter: "Job-recruiter"}
 
   GRAD = ['B.A.', 'B.B.A.', 'B.Com', 'B.C.A.', 'B.E.', 'B.Sc']
   POST_GRAD = ['M.A.', 'M.B.A.', 'M.Com', 'M.C.A.', 'M.E.', 'M.Sc']

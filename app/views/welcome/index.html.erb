@@ -1,5 +1,31 @@
+<title>Welcome Index Page</title>
 <% if current_user %>
   <h1> Hello        :- <%= current_user.first_name %> </h1>
   <h1> User Type is :- <%= current_user.user_type %> </h1>
 <% end %>
 
+<% if current_user.seeker? %>
+  No of active jobs are : <%= @jobs.count %><br>
+  <table>
+    <%= render partial: 'jobs/table' %>
+      <% @jobs.each do |job| %>
+      <tr>
+        <td><%= job.title %></td>
+        <td><%= job.location %></td>
+        <td><%= job.expire_time %></td>
+        <td><%= job.min_salary %></td>
+        <td><%= job.max_salary %></td>
+        <td><%= job.description %></td>
+        <div class="btn-group ">
+        <td id="apply_<%= job.id %>">
+          <%= link_to "Apply", apply_job_path(job), method: :patch, class: 'btn btn-default', remote: true if !(current_user.applied_jobs.map(&:id).include? job.id) %>
+        </td>
+        <td id="unapply_<%= job.id %>">
+        <%= link_to "Un-apply", un_apply_job_path(job), method: :patch, class: 'btn btn-default', remote: true if (current_user.applied_jobs.map(&:id).include? job.id) %>
+        </td>
+        </div>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
+<br>

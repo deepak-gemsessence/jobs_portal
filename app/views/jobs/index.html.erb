@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Job Index Page</title>
+  </head>
+  <body>
+    No of active jobs are : <%= @jobs.count %><br>
+    <table>
+      <%= render partial: 'table' %>
+      <%#= render partial: "jobs", collection: @jobs %>
+      <% @jobs.each do |job| %>
+        <tr>
+          <td><%= job.title %></td>
+          <td><%= job.location %></td>
+          <td><%= job.expire_time %></td>
+          <td><%= job.min_salary %></td>
+          <td><%= job.max_salary %></td>
+          <td><%= job.description %></td>
+          <td>
+            <% job.skills.each do |skill| %>
+              <%= skill.name %><%= "," unless skill == job.skills.last %>
+            <% end %>
+          </td>
+
+          <div class="btn-group ">
+            <%# if current_user.id == job.recruiter_id %>
+              <td><%= link_to "view", job, class: 'btn btn-info ' %></td>
+              <td><%= link_to "edit", edit_job_path(job), class: 'btn btn-warning '  %></td>
+              <td><%= link_to "delete", job, method: :delete, data: { confirm: "You sure?" }, class: 'btn btn-danger' %></td>
+            <%# else %>
+              <td id="apply_<%= job.id %>"><%#= link_to "Apply", apply_job_path(job), method: :patch, class: 'btn btn-default', remote: true if !(current_user.applied_jobs.map(&:id).include? job.id) %></td>
+            <%# end %>
+          </div>
+        </tr>
+      <% end %>
+    </table>
+  </body>
+</html><br>
