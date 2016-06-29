@@ -1,0 +1,44 @@
+
+<div class="modal fade" id="declineJobModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="exampleModalLabel">Decline</h4>
+      </div>
+      <div class="modal-body">
+        <%= form_tag(accept_jobs_path, method: :post) do %>
+          <div class="form-group">
+            <%= check_box_tag("decline_all", true, false) %>
+            <%= hidden_field_tag("seeker_id", "", class: "seeker_id") %>
+            <%= hidden_field_tag("job_id", "", class: "job_id") %>
+            <%= label_tag("Do you want to decline other user's for this job ?") %>
+          </div>
+          <div class="actions">
+            <%= submit_tag("Ok", class: "btn btn-success") %>
+          </div>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!--<div id="dialog" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <h3>Hello Deepak</h3>
+    </div>
+  </div>
+</div>
+-->

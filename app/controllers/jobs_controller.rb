@@ -1,32 +1,31 @@
 class JobsController < ApplicationController
 
-  before_action :get_job_id, only: [:show, :update, :edit, :destroy, :apply, :un_apply]
+  before_action :get_job_id, only: [:show, :update, :edit, :destroy, :apply, :un_apply, :decline]
   before_action :all_skills, only: [:new, :create]
 
   def index
-    if params[:search].present?# || params[:skills].present?
-      @jobs = Job.search(params[:search]).order("created_at DESC")
+    if params[:filter_by].present? && params[:search_key].present?
+      @jobs = Job.search(params[:search_key]).order_by_desc & Job.filter_skills(params[:filter_by]).expired_jobs
+      respond_to do |format|
+        format.js {}
+      end
+    elsif params[:filter_by].present?
+      @jobs = Job.filter_skills(params[:filter_by]).expired_jobs
+      respond_to do |format|
+        format.js {}
+      end
+    elsif params[:search].present?# || params[:skills].present?
+      @jobs = Job.search(params[:search]).order_by_desc.expired_jobs
       # @jobs = Job.joins(:skills).where(['(jobs.title) like ? or (skills.name) like ?', "%#{params[:title]}%", "%#{params[:name]}%"]).distinct #if current_user.recruiter?
     else
-      if current_user.seeker?
-        # user_skills = current_user.skills.ids
-        # jobs = []
-        # Job.all.each do |jb|
-        #   job_skills = jb.skills.ids
-        #   job_skill_present = job_skills.all?{|skill| user_skills.include?(skill)}
-        #   user_skill_present = user_skills.all?{|skill| job_skills.include?(skill)}
-        #   jobs << jb if user_skill_present || job_skill_present
-        # end
-        jobs = Job.joins(:skill_sets).where('skill_sets.skill_id IN (?)', current_user.skills.map(&:id)).uniq
-        if current_user.skills.present?
-          @jobs = jobs
-        else
-          flash.now[:error] = "You don't have any skill, You are being redirected on 'Home Page'"
+      if current_user.seeker? && current_user.skills.present?
+        @jobs = Job.filter_skills(current_user.skills.map(&:id)).expired_jobs
+      elsif current_user.seeker? && !current_user.skills.present?
+        flash[:error] = "You don't have any skill, You are being redirected on 'Home Page'"
             # render action: :index
-          redirect_to root_path
-        end
+        redirect_to root_path
       else
-        @jobs = Job.all.where(recruiter_id: current_user.id)
+        @jobs = Job.where(recruiter_id: current_user.id)
       end
     end
 
@@ -96,17 +95,31 @@ class JobsController < ApplicationController
   def un_apply
     respond_to do |format|
       # binding.pry
-       Job.find(params[:id]).apply_jobs.destroy_all
+       @job.apply_jobs.destroy_all
       # @job.apply_jobs.create(user_id: current_user.id)
       format.html { redirect_to jobs_path }
       format.js {}
     end
   end
 
+  def accept
+    job = Job.find(params[:job_id])
+    apply_job = job.apply_jobs.where(user_id: params[:seeker_id]).first
+    apply_job.decline_other_jobs = params[:decline_all] if params[:decline_all]
+    apply_job.update(status: "accepted")
+    redirect_to jobs_path
+  end
+
+  def decline
+    job = @job.apply_jobs.where(user_id: params[:job_seeker]).first
+    job.update(status: "declined")
+    redirect_to jobs_path
+  end
+
   private
 
   def validate_params
-    params.require(:job).permit(:title, :location, :expire_time, :min_salary, :max_salary, :description, skill_sets_attributes: [:id, :skill_id])
+    params.require(:job).permit(:title, :location, :expire_time, :min_salary, :max_salary, :description, skill_sets_attributes: [:id, :skill_id, :status])
   end
 
   def get_job_id
