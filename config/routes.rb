@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :jobs do
     patch :apply, on: :member
     patch :un_apply, on: :member
+    post :accept, on: :collection
+    patch :decline, on: :member
   end
 
   # resource :users do

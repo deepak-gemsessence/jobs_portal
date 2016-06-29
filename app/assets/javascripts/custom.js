@@ -1,39 +1,57 @@
-$(document).ready(function() {
+$(document).on('ready page:load', function(event) {
   $(".destroy").hide();
   $(".chkbox").change(function() {
     $(this).siblings('.destroy').prop('checked', !this.checked);
   });
 });
 
-// $(document).ready(function() {
-//   $("#user_skill_sets_attributes_0__destroy").hide();
-//   $("#user_skill_sets_attributes_1__destroy").hide();
-//   $("#user_skill_sets_attributes_2__destroy").hide();
-//   $("#user_skill_sets_attributes_0_skill_id").change(function() {
-//     if(this.checked) {
-//       $("#user_skill_sets_attributes_0__destroy").hide();
-//       $('#user_skill_sets_attributes_0__destroy').prop('checked', false);
-//     } else {
-//       $("#user_skill_sets_attributes_0__destroy").show();
-//       $('#user_skill_sets_attributes_0__destroy').prop('checked', true);
-//     }
-//   });
-//   $("#user_skill_sets_attributes_1_skill_id").change(function() {
-//     if(this.checked) {
-//       $("#user_skill_sets_attributes_1__destroy").hide();
-//       $('#user_skill_sets_attributes_1__destroy').prop('checked', false);
-//     } else {
-//       $("#user_skill_sets_attributes_1__destroy").show();
-//       $('#user_skill_sets_attributes_1__destroy').prop('checked', true);
-//     }
-//   });
-//   $("#user_skill_sets_attributes_2_skill_id").change(function() {
-//     if(this.checked) {
-//       $("#user_skill_sets_attributes_2__destroy").hide();
-//       $('#user_skill_sets_attributes_2__destroy').prop('checked', false);
-//     } else {
-//       $("#user_skill_sets_attributes_2__destroy").show();
-//       $('#user_skill_sets_attributes_2__destroy').prop('checked', true);
-//     }
-//   });
-// });
+$(document).on('ready page:load', function(event) {
+  $(".skills_filter").on("click", function() {
+    var ids = [];
+    search_val = $('.search').val();
+    $('.skills_filter:checked').map(function () {
+      console.log(this.value)
+      ids.push(this.value);
+    })
+    $.ajax({
+      type: "GET",
+      url: "/jobs/",
+      data: { filter_by: ids, search_key: search_val },
+      success: function(data) {
+        return false
+      },
+      error: function(data) {
+        return false
+      }
+    });
+  });
+});
+
+
+$(document).on('ready page:load', function(event) {
+  $('.accept').on("click", function(){
+    job_id = $('.hidden_job_id').val();
+    seeker_id = $(this).data('job-seeker');
+    $('#declineJobModal').modal();
+    $('.job_id').val(job_id);
+    $('.seeker_id').val(seeker_id);
+  });
+});
+
+
+
+
+
+
+// $('.accept').data('job-id')
+// $.post "/jobs/"
+// url: "/jobs/" + hidden_value + "/edit",
+// data: { id: hidden_value },
+// success: function(data) {
+//   data.title
+//   $('#').val(data.title);
+// }
+
+// and in controller
+// jod = Job.find(params[:id])
+// render json: { title: job.title, name: job.name } # 'new'

@@ -52,17 +52,17 @@
           <ul class="nav navbar-nav">
 
             <% if current_user %>
-            <%# binding.pry %>
+              <li><%#= link_to "messages", messages_welcome_path %></li>
               <% if current_user.recruiter? %>
-              <li class="<%= "active" if params[:controller] == "jobs" %>"><%= link_to "View All Jobs", jobs_path %></li>
-                <li class="<%= "active" if (params[:action] == 'new') %>"><%= link_to "Create New Job", new_job_path %></li>
+              <li class="<%= "active" if params[:controller] == "jobs" && params[:action] == 'index' %>"><%= link_to "View All Jobs", jobs_path %></li>
+                <li class="<%= "active" if params[:controller] == "jobs" &&params[:action] == 'new' %>"><%= link_to "Create New Job", new_job_path %></li>
               <% else %>
                 <li class="<%= "active" if params[:controller] == "welcome" %>"><%= link_to "View All Jobs", root_path %></li>
                 <li class="<%= "active" if params[:controller] == "jobs" %>"><%= link_to "Recommended Jobs", jobs_path %></li>
-                <li class="<%= "active" if params[:controller] == "jobs" %>"><%= link_to "Edit Details", edit_user_registration_path  %></li>
+                <li class="<%= "active" if params[:controller] == "registrations" %>"><%= link_to "Edit Details", edit_user_registration_path  %></li>
               <% end %>
             <% else %>
-              <li"><%= link_to "Home Page", root_path %></li>
+              <li><%= link_to "Home Page", root_path %></li>
             <% end %>
 
           </ul>
@@ -76,7 +76,7 @@
           </ul>
           <%= form_tag(jobs_path, method: "get", id: "search-form", class: "navbar-form navbar-right") do %>
             <div class="form-group">
-              <%= text_field_tag :search, params[:search], placeholder: "Search Jobs", class: "form-control" %>
+              <%= text_field_tag :search, params[:search], placeholder: "Search Jobs", class: "form-control search" %>
             </div>
             <%= submit_tag "Search", :name => nil, class: "btn btn-default" %>
           <% end %>
@@ -96,15 +96,12 @@
             <h3>Sidebar</h3>
             <ul class="nav nav-list">
               <li class="nav-header">Skills</li>
-              <%= form_tag(jobs_path, method: :get, class: "navbar-form")do %>
-                <div class="form-group">
-                  <% Skill.all.each do |a| %>
-                  <%= check_box_tag("skills[]", a.id) %>
-                  <%= a.name %><br>
-                  <% end %>
-                  <%= submit_tag 'Submit' %>
-                </div>
-              <% end %>
+              <div class="form-group">
+                <% Skill.all.each do |skill| %>
+                  <%= check_box_tag "skills[]", skill.id, checked = false, class: "skills_filter"%>
+                  <%= skill.name %><br>
+                <% end %>
+              </div>
               <li><%#= link_to "Link1", "/path1"  %></li>
               <li><%#= link_to "Link2", "/path2"  %></li>
               <li><%#= link_to "Link3", "/path3"  %></li>
