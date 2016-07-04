@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'messages/index'
+
   root 'welcome#index'
 
   # get 'welcome/index'
@@ -12,6 +14,7 @@ Rails.application.routes.draw do
     patch :decline, on: :member
   end
 
+  resources :messages
   # resource :users do
   #    resource :user_profile
   # end

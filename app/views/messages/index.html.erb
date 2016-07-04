@@ -1,0 +1,18 @@
+<h1>Messages index</h1>
+
+<table>
+  <tr>
+    <th>
+      <h3>Your messages are:-</h3>
+    </th>
+  </tr>
+  <% @messages.each do |message| %>
+    <tr>
+      <td>
+        <%= message.apply_job_status %>
+      </td>
+    </tr>
+  <% end %>
+</table>
+<%= paginate @messages %><br>
+<%= page_entries_info @messages, entry_name: 'messages' %>

@@ -10,7 +10,7 @@ $(document).on('ready page:load', function(event) {
     var ids = [];
     search_val = $('.search').val();
     $('.skills_filter:checked').map(function () {
-      console.log(this.value)
+      // console.log(this.value)
       ids.push(this.value);
     })
     $.ajax({

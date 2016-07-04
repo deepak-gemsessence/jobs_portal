@@ -5,27 +5,27 @@ class JobsController < ApplicationController
 
   def index
     if params[:filter_by].present? && params[:search_key].present?
-      @jobs = Job.search(params[:search_key]).order_by_desc & Job.filter_skills(params[:filter_by]).expired_jobs
+      @jobs = Job.search(params[:search_key]).order_by_desc & Job.filter_skills(params[:filter_by]).expired_jobs.page(params[:page]).per(3)
       respond_to do |format|
         format.js {}
       end
     elsif params[:filter_by].present?
-      @jobs = Job.filter_skills(params[:filter_by]).expired_jobs
+      @jobs = Job.filter_skills(params[:filter_by]).expired_jobs.page(params[:page]).per(3)
       respond_to do |format|
         format.js {}
       end
     elsif params[:search].present?# || params[:skills].present?
-      @jobs = Job.search(params[:search]).order_by_desc.expired_jobs
-      # @jobs = Job.joins(:skills).where(['(jobs.title) like ? or (skills.name) like ?', "%#{params[:title]}%", "%#{params[:name]}%"]).distinct #if current_user.recruiter?
+      @jobs = Job.search(params[:search]).order_by_desc.expired_jobs.page(params[:page]).per(3)
+      # @jobs = Job.joins(:skills).where(['(jobs.title) like ? or (skills.name) like ?', "%#{params[:title]}%", "%#{params[:name]}%"]).distinct #if current_user.recruiter?.page(params[:page]).per(3)
     else
       if current_user.seeker? && current_user.skills.present?
-        @jobs = Job.filter_skills(current_user.skills.map(&:id)).expired_jobs
+        @jobs = Job.filter_skills(current_user.skills.map(&:id)).expired_jobs.page(params[:page]).per(3)
       elsif current_user.seeker? && !current_user.skills.present?
         flash[:error] = "You don't have any skill, You are being redirected on 'Home Page'"
             # render action: :index
         redirect_to root_path
       else
-        @jobs = Job.where(recruiter_id: current_user.id)
+        @jobs = Job.where(recruiter_id: current_user.id).page(params[:page]).per(3)
       end
     end
 
@@ -86,7 +86,10 @@ class JobsController < ApplicationController
 
   def apply
     respond_to do |format|
-      @job.apply_jobs.create(user_id: current_user.id)
+      apply_job = @job.apply_jobs.new(user_id: current_user.id)
+      if apply_job.save
+        apply_job.last.messages.create(apply_job_id: @job.apply_jobs.last.id)
+      end
       format.html { redirect_to jobs_path }
       format.js {}
     end
@@ -94,9 +97,7 @@ class JobsController < ApplicationController
 
   def un_apply
     respond_to do |format|
-      # binding.pry
        @job.apply_jobs.destroy_all
-      # @job.apply_jobs.create(user_id: current_user.id)
       format.html { redirect_to jobs_path }
       format.js {}
     end

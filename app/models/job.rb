@@ -14,6 +14,8 @@ class Job < ActiveRecord::Base
   order_by_desc
   # scope :expired_jobs, -> { where(date(expire_time >= ) Date.today) }
   scope :expired_jobs, -> { where("date(expire_time) >= ?", Date.today) }
+  scope :apply_job_exists?, -> { where(apply_jobs.job_id is null) }
+
 
   def self.search(search)
     where("title like ?", "%#{search}%")
