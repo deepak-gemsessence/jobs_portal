@@ -6,13 +6,13 @@
   <td><%= job.min_salary %></td>
   <td><%= job.max_salary %></td>
   <td><%= job.description %></td>
+  <td>
+    <% job.skills.each do |skill| %>
+      <%= skill.name %><%= "," unless skill == job.skills.last %>
+    <% end %>
+  </td>
 
   <% if current_user.recruiter?%>
-    <td>
-      <% job.skills.each do |skill| %>
-        <%= skill.name %><%= "," unless skill == job.skills.last %>
-      <% end %>
-    </td>
 
     <div class="btn-group ">
       <%# if current_user.id == job.recruiter_id %>

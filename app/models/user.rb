@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :apply_jobs, dependent: :destroy
   has_many :jobs, foreign_key: :recruiter_id, dependent: :destroy
   has_many :applied_jobs, through: :apply_jobs, source: :job
+  has_many :messages, -> { where "status is not null" }, through: :apply_jobs
+  # scope :accepted, -> { where("apply_jobs.status = ?", "accepted") }
 
   validates :username, uniqueness: true
   validates :first_name, :last_name, :username, presence: true
@@ -19,4 +21,7 @@ class User < ActiveRecord::Base
 
   GRAD = ['B.A.', 'B.B.A.', 'B.Com', 'B.C.A.', 'B.E.', 'B.Sc']
   POST_GRAD = ['M.A.', 'M.B.A.', 'M.Com', 'M.C.A.', 'M.E.', 'M.Sc']
+
+  scope :recruiters, -> { where("user_type = 'Job-recruiter'") }
+
 end

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem 'kaminari'
 gem 'devise'
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS

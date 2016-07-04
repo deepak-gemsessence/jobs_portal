@@ -10,5 +10,7 @@
         <%= render partial: 'job', collection: @jobs %>
       </table>
     </div>
+    <%= paginate @jobs %><br>
+    <%= page_entries_info @jobs, entry_name: 'jobs' %>
   </body>
 </html><br>
