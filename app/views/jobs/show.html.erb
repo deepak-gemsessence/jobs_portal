@@ -13,38 +13,18 @@
     <td><%= @job.description %></td>
   </tr>
 </table>
+<% if current_user.recruiter? %>
+  <h3 class="text-center"> Applied Candidates are :- </h3>
+  <table>
+    <%= render partial: 'job_seeker_table' %>
+    <%= render partial: 'job_seeker', collection: @job_seekers %>
+  </table>
+  <%= render partial: 'modal' %>
+<% end %>
 
-<h3 class="text-center"> Applied Candidates are :- </h3>
-<table>
-  <tr>
-    <th>First Name</th>
-    <th>Last Name</th>
-    <th>E-mail</th>
-    <th></th>
-    <th>Matching Skills</th>
-    <th></th>
-    <th></th>
-  </tr>
-  <% @job_seekers.each do |job_seeker| %>
-    <tr>
-      <td><%= job_seeker.first_name %></td>
-      <td><%= job_seeker.last_name %></td>
-      <td><%= job_seeker.email %></td>
-      <td><%= hidden_field_tag "id", @job.id, class: "hidden_job_id" %></td>
-      <td>
-        <% if job_seeker.skills.present? %>
-          <% job_seeker.skills.each do |skill|%>
-            <%= skill.name %><%= "," unless skill == job_seeker.skills.last %>
-          <% end %>
-        <% end %>
-      </td>
-      <td>
-        <%= link_to "Accept", 'javascript:void(0);' , class: 'btn btn-default accept', id: "accepting", data: { job_seeker: job_seeker.id } %>
-      </td>
-      <td>
-        <%= link_to "Decline", decline_job_path(@job.id, job_seeker: job_seeker), method: :patch, class: 'btn btn-default'  %>
-      </td>
-    </tr>
-  <% end %>
-</table>
-<%= render partial: 'modal' %>
+<%= render partial: 'comments/new_comment', locals: { job: @job } %><br>
+
+<br>
+<% @job.comments.each do |comment| %>
+  <%= render partial: 'comments/comment', locals: { comment: comment, job: @job } if comment.parent_comment? %>
+<% end %>

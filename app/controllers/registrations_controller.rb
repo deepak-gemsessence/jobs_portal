@@ -4,12 +4,6 @@ class RegistrationsController < Devise::RegistrationsController
   def edit
     resource.build_user_profile if resource.user_profile.blank?
     @skills = Skill.all
-    # @skills.each do |skill|
-    #   unless resource.skills.map(&:id).include? skill.id
-    #     resource.skill_sets.build(skill_id: skill.id)
-    #   end
-    # end
-    #build_skill_sets
   end
 
   def update
@@ -26,7 +20,6 @@ class RegistrationsController < Devise::RegistrationsController
       respond_with resource, location: after_update_path_for(resource)
     else
       clean_up_passwords resource
-      #build_skill_sets if resource.errors.any?
       respond_with resource
     end
   end
@@ -42,14 +35,5 @@ class RegistrationsController < Devise::RegistrationsController
   def after_inactive_sign_up_path_for(resource_or_scope)
     session["user_return_to"] || root_path
   end
-
-  private
-
-  # def build_skill_sets
-  #   @skills = Skill.all
-  #   @skills.each do |skill|
-  #     resource.skill_sets.build(skill_id: skill.id) if !resource.skill_sets.map(&:skill_id).include? skill.id
-  #   end
-  # end
 
 end

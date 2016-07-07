@@ -1,0 +1,11 @@
+<% klass = (comment.deep_level * 50) %>
+<div class="comment" style="margin-left: <%= klass %>px;">
+  <p><b>Commenter Name :- </b><%= comment.user.first_name %></p>
+  <%= comment.body %>
+  <%= link_to "reply", new_job_comment_path(job, comment: comment.id), class: "btn btn-primary reply", remote: true %>
+  <div class="reply_new" id="comment_<%= comment.id %>"></div>
+</div>
+
+<% comment.replies.each do |reply| %>
+  <%= render partial: 'comments/comment', locals: { job: job, comment: reply, is_reply: true } %>
+<% end %>

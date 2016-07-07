@@ -1,3 +1,1 @@
-// $("#apply_<%= @job.id %>").hide();
-// $("#un_apply_<%= @job.id %>").show();
-// write these code in custom.js file
+$('#apply_<%= @job.id %>').html(" <%= escape_javascript(render partial: 'jobs/apply_un_apply', locals: { job: @job }) %>");

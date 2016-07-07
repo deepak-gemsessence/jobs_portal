@@ -1,0 +1,9 @@
+<%= form_for Comment.new, url: job_comments_path(@job) do |comment| %>
+  <%# binding.pry %>
+  <%= comment.label :commenter%><br>
+  <%= text_field_tag '', current_user.first_name, disabled: true %><br>
+  <%= comment.label :body %><br>
+  <%= comment.text_area :body, id: "body_input" %><br>
+  <%= comment.hidden_field :parent_id, value: @parent_comment.id if @parent_comment.present? %>
+  <%= comment.submit "Create Comment", class: "btn btn-success" %><br>
+<% end %>

@@ -1,0 +1,19 @@
+<tr>
+  <td><%= job_seeker.first_name %></td>
+  <td><%= job_seeker.last_name %></td>
+  <td><%= job_seeker.email %></td>
+  <td><%= hidden_field_tag "id", @job.id, class: "hidden_job_id" %></td>
+  <td>
+    <% if job_seeker.skills.present? %>
+      <% job_seeker.skills.each do |skill|%>
+        <%= skill.name %><%= "," unless skill == job_seeker.skills.last %>
+      <% end %>
+    <% end %>
+  </td>
+  <td>
+    <%= link_to "Accept", 'javascript:void(0);' , class: 'btn btn-default accept', id: "accepting", data: { job_seeker: job_seeker.id } %>
+  </td>
+  <td>
+    <%= link_to "Decline", decline_job_path(@job.id, job_seeker: job_seeker), method: :patch, class: 'btn btn-default'  %>
+  </td>
+</tr>
