@@ -1,5 +1,1 @@
-// alert("Are you sure !!!");
-// write these code in custom.js file
-
-// $("#apply_<%= @job.id %>").show();
-// $("#un_apply_<%= @job.id %>").hide();
+$('#unapply_<%= @job.id %>').html(" <%= escape_javascript(render partial: 'jobs/apply_un_apply', locals: { job: @job }) %>");

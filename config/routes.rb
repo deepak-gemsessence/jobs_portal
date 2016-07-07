@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     patch :un_apply, on: :member
     post :accept, on: :collection
     patch :decline, on: :member
+    resources :comments
   end
 
   resources :messages

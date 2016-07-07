@@ -1,7 +1,5 @@
 class JobsController < ApplicationController
-
-  before_action :get_job_id, only: [:show, :update, :edit, :destroy, :apply, :un_apply, :decline]
-  before_action :all_skills, only: [:new, :create]
+  include JobActions
 
   def index
     if params[:filter_by].present? && params[:search_key].present?
@@ -14,16 +12,15 @@ class JobsController < ApplicationController
       respond_to do |format|
         format.js {}
       end
-    elsif params[:search].present?# || params[:skills].present?
+    elsif params[:search].present?
+      # binding.pry
       @jobs = Job.search(params[:search]).order_by_desc.expired_jobs.page(params[:page]).per(3)
-      # @jobs = Job.joins(:skills).where(['(jobs.title) like ? or (skills.name) like ?', "%#{params[:title]}%", "%#{params[:name]}%"]).distinct #if current_user.recruiter?.page(params[:page]).per(3)
     else
       if current_user.seeker? && current_user.skills.present?
         @jobs = Job.filter_skills(current_user.skills.map(&:id)).expired_jobs.page(params[:page]).per(3)
       elsif current_user.seeker? && !current_user.skills.present?
         flash[:error] = "You don't have any skill, You are being redirected on 'Home Page'"
-            # render action: :index
-        redirect_to root_path
+         redirect_to root_path
       else
         @jobs = Job.where(recruiter_id: current_user.id).page(params[:page]).per(3)
       end
@@ -56,6 +53,7 @@ class JobsController < ApplicationController
 
   def show
     @job_seekers = @job.job_seekers
+    @comments = @job.comments
   end
 
   def edit
@@ -85,21 +83,21 @@ class JobsController < ApplicationController
   end
 
   def apply
-    respond_to do |format|
-      apply_job = @job.apply_jobs.new(user_id: current_user.id)
-      if apply_job.save
-        apply_job.last.messages.create(apply_job_id: @job.apply_jobs.last.id)
+    apply_job = @job.apply_jobs.new(user_id: current_user.id)
+    if apply_job.save
+      apply_job.messages.create(apply_job_id: @job.apply_jobs.last.id)
+      respond_to do |format|
+        format.js {}
       end
-      format.html { redirect_to jobs_path }
-      format.js {}
     end
   end
 
   def un_apply
-    respond_to do |format|
-       @job.apply_jobs.destroy_all
-      format.html { redirect_to jobs_path }
-      format.js {}
+    if @job.apply_jobs.present?
+      @job.apply_jobs.destroy_all
+      respond_to do |format|
+        format.js {}
+      end
     end
   end
 

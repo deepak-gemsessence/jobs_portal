@@ -1,0 +1,1 @@
+$("#comment_<%= @parent_comment.id %>").html("<%= escape_javascript (render partial: 'comments/new_comment', locals: { parent_comment: @parent_comment, job: @job }) %>");

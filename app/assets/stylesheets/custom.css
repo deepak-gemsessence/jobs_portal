@@ -4,3 +4,7 @@ td{
 th{
   padding: 5px;
 }
+div:hover .all_jobs{
+  background: #DED4F6 ;
+  outline: 2px;
+}

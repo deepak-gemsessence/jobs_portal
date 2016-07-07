@@ -10,7 +10,6 @@ $(document).on('ready page:load', function(event) {
     var ids = [];
     search_val = $('.search').val();
     $('.skills_filter:checked').map(function () {
-      // console.log(this.value)
       ids.push(this.value);
     })
     $.ajax({
@@ -27,7 +26,6 @@ $(document).on('ready page:load', function(event) {
   });
 });
 
-
 $(document).on('ready page:load', function(event) {
   $('.accept').on("click", function(){
     job_id = $('.hidden_job_id').val();
@@ -37,11 +35,6 @@ $(document).on('ready page:load', function(event) {
     $('.seeker_id').val(seeker_id);
   });
 });
-
-
-
-
-
 
 // $('.accept').data('job-id')
 // $.post "/jobs/"

@@ -52,7 +52,6 @@
           <ul class="nav navbar-nav">
 
             <% if current_user %>
-              <li class="<%= "active" if params[:controller] == "messages" %>"><%= link_to "messages", messages_path %></li>
               <% if current_user.recruiter? %>
               <li class="<%= "active" if params[:controller] == "jobs" && params[:action] == 'index' %>"><%= link_to "View All Jobs", jobs_path %></li>
                 <li class="<%= "active" if params[:controller] == "jobs" &&params[:action] == 'new' %>"><%= link_to "Create New Job", new_job_path %></li>
@@ -61,6 +60,7 @@
                 <li class="<%= "active" if params[:controller] == "jobs" %>"><%= link_to "Recommended Jobs", jobs_path %></li>
                 <li class="<%= "active" if params[:controller] == "registrations" %>"><%= link_to "Edit Details", edit_user_registration_path  %></li>
               <% end %>
+              <li class="<%= "active" if params[:controller] == "messages" %>"><%= link_to "messages", messages_path %></li>
             <% else %>
               <li><%= link_to "Home Page", root_path %></li>
             <% end %>
