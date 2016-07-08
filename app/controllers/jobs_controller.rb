@@ -13,7 +13,6 @@ class JobsController < ApplicationController
         format.js {}
       end
     elsif params[:search].present?
-      # binding.pry
       @jobs = Job.search(params[:search]).order_by_desc.expired_jobs.page(params[:page]).per(3)
     else
       if current_user.seeker? && current_user.skills.present?
