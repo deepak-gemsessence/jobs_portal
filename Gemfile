@@ -1,12 +1,16 @@
 source 'https://rubygems.org'
-
+gem "nested_form"
+# for rating purpose.
+gem 'ratyrate'
+# racapcha
+gem "recaptcha", require: "recaptcha/rails"
+# for pagination.
 gem 'kaminari'
 gem 'devise'
 gem "therubyracer"
 gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem "twitter-bootstrap-rails"
 # manage multiple nested models in single form
-# gem 'nested_form'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -44,6 +48,8 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
   gem 'pry'
+  gem 'rspec-rails', '~> 3.4'
+  gem 'factory_girl_rails'
 end
 
 group :development do

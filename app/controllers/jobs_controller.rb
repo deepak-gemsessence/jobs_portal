@@ -53,6 +53,10 @@ class JobsController < ApplicationController
   def show
     @job_seekers = @job.job_seekers
     @comments = @job.comments
+    # binding.pry
+    # @rating = @job.ratings.build(user_id: current_user.id)
+    # @rating = Rating.where(job_id: @job.id, user_id: current_user.id) if Rating.first.present?
+
   end
 
   def edit
@@ -118,6 +122,7 @@ class JobsController < ApplicationController
 
   def validate_params
     params.require(:job).permit(:title, :location, :expire_time, :min_salary, :max_salary, :description, skill_sets_attributes: [:id, :skill_id, :status])
+    # params.require(:job).permit(:title, :location, :expire_time, :min_salary, :max_salary, :description, skill_sets_attributes: [:id, :skill_id, :status], ratings_attributes: [:id, :job_id, :user_id, :star, :category])
   end
 
   def get_job_id

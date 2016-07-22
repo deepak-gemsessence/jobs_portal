@@ -8,6 +8,3 @@ namespace :dummy do
     puts "this is dummy_task's another_task which is invoking demo's first_task"
   end
 end
-
-# User.create!(email: 'deep.indore111@gmail.com', password: '123456', first_name: 'deepak', last_name: 'yadav', username: 'deep.indore', user_type: 'Job-recruiter')
-
