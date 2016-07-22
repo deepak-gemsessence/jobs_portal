@@ -1,4 +1,3 @@
-      <%# binding.pry %>
       <% if current_user.is_applied_job?(job) %>
         <td class="apply_unapply" id="apply_<%= job.id %>">
         <%= link_to "Apply", apply_job_path(job), method: :patch, class: 'btn btn-default', remote: true %>

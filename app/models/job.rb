@@ -8,6 +8,8 @@ class Job < ActiveRecord::Base
   belongs_to :recruiter, class_name: 'User'
   accepts_nested_attributes_for :skill_sets, allow_destroy: true
   has_many :comments, dependent: :destroy
+  has_many :ratings, dependent: :destroy
+  accepts_nested_attributes_for :ratings, allow_destroy: true
 
   validates :title, :location, :expire_time, :min_salary, :max_salary, :description, presence: true
 
@@ -16,6 +18,8 @@ class Job < ActiveRecord::Base
   order_by_desc
   scope :expired_jobs, -> { where("date(expire_time) >= ?", Date.today) }
   scope :apply_job_exists?, -> { where(apply_jobs.job_id is null) }
+
+  # ratyrate_rateable "Quality", "Salary", "Location", "Time"
 
 
   def self.search(search)

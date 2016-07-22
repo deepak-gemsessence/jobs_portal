@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
 
+  post '/rate' => 'rater#create', :as => 'rate'
   get 'messages/index'
 
   root 'welcome#index'
 
+
   # get 'welcome/index'
-  resource :welcome
+    resource :welcome
   devise_for :users, :controllers => {:registrations => "registrations"}
   resources :jobs do
     patch :apply, on: :member
@@ -13,6 +15,7 @@ Rails.application.routes.draw do
     post :accept, on: :collection
     patch :decline, on: :member
     resources :comments
+    resources :ratings
   end
 
   resources :messages

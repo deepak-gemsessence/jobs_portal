@@ -1,3 +1,5 @@
+<%= javascript_include_tag :defaults, "nested_form" %>
+
 <h2> Hello        :- <%= current_user.first_name %> </h2>
 <h1 class="text-center">Show Job</h1>
 
@@ -13,6 +15,21 @@
     <td><%= @job.description %></td>
   </tr>
 </table>
+<br>
+<h3>Ratings :- </h3>
+<%= nested_form_for(@job, url: job_ratings_path(@job), method: :post) do |f| %>
+  <%= f.fields_for :ratings, Rating.new do |rating| %>
+    <p>
+      <div id="ratings"></div>
+      <%= hidden_field_tag 'quality_star' %>
+      <%= hidden_field_tag 'salary_star' %>
+      <%= hidden_field_tag 'location_star' %>
+      <%= hidden_field_tag 'time_star' %>
+    </p>
+  <% end %>
+  <p><%= f.submit class: "btn btn-success" %><br></p>
+<% end %>
+<br>
 <% if current_user.recruiter? %>
   <h3 class="text-center"> Applied Candidates are :- </h3>
   <table>
@@ -28,3 +45,82 @@
 <% @job.comments.each do |comment| %>
   <%= render partial: 'comments/comment', locals: { comment: comment, job: @job } if comment.parent_comment? %>
 <% end %>
+
+<%# a = Rating.last.star %>
+<%# binding.pry %>
+<% quality = Rating.categories(@job.id, current_user.id, 0)  %>
+<% salary = Rating.categories(@job.id, current_user.id, 1)  %>
+<% location = Rating.categories(@job.id, current_user.id, 2)  %>
+<% time = Rating.categories(@job.id, current_user.id, 3)  %>
+
+<script>
+  (function() {
+
+    'use strict';
+    // SHOP ELEMENT
+    var shop = document.querySelector('#ratings');
+
+    // DUMMY DATA
+    var data = [
+      {
+        title: "Quality",
+        rating: <%= (quality.present?) ? quality : 0 %>
+      },
+      {
+        title: "Salary",
+        rating: <%= (salary.present?) ? salary : 0 %>
+      },
+      {
+        title: "Location",
+        rating: <%= (location.present?) ? location : 0 %>
+      },
+      {
+        title: "Time",
+        rating: <%= (time.present?) ? time : 0 %>
+      }
+    ];
+
+    // INITIALIZE
+    (function init() {
+      for (var i = 0; i < data.length; i++) {
+        addRatingWidget(buildShopItem(data[i]), data[i]);
+      }
+    })();
+
+    // BUILD SHOP ITEM
+    function buildShopItem(data) {
+      var shopItem = document.createElement('div');
+
+      var html = '<div class="c-shop-item__img"></div>' +
+        '<div class="c-shop-item__details">' +
+          '<h3 class="c-shop-item__title">' + data.title + '</h3>' +
+          '<ul class="c-rating"></ul>' +
+        '</div>';
+
+      shopItem.classList.add('c-shop-item');
+      shopItem.innerHTML = html;
+      shop.appendChild(shopItem);
+
+      return shopItem;
+    }
+
+    // ADD RATING WIDGET
+    function addRatingWidget(shopItem, data) {
+      var ratingElement = shopItem.querySelector('.c-rating');
+      var currentRating = data.rating;
+      var maxRating = 5;
+      if (data.title == "Quality") {
+          var callback = function(rating) { $('#quality_star').val(rating); };
+      } else if (data.title == "Salary") {
+          var callback = function(rating) { $('#salary_star').val(rating); };
+      } else if (data.title == "Location") {
+          var callback = function(rating) { $('#location_star').val(rating); };
+      } else {
+          var callback = function(rating) { $('#time_star').val(rating); };
+      }
+      // var callback = function(rating) { alert(rating); $('#salary_star').val(rating); };
+      var r = rating(ratingElement, currentRating, maxRating, callback);
+    }
+
+  })();
+</script>

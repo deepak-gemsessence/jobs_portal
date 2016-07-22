@@ -36,6 +36,32 @@ $(document).on('ready page:load', function(event) {
   });
 });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // $('.accept').data('job-id')
 // $.post "/jobs/"
 // url: "/jobs/" + hidden_value + "/edit",
